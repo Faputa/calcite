@@ -44,6 +44,7 @@ public class JdbcToEnumerableConverterRule extends ConverterRule {
   }
 
   @Override public @Nullable RelNode convert(RelNode rel) {
+    // 本方法会为空间中的每个Convention为EnumerableConvention的节点调用一次，除了被剪枝的节点
     RelTraitSet newTraitSet = rel.getTraitSet().replace(getOutTrait());
     return new JdbcToEnumerableConverter(rel.getCluster(), newTraitSet, rel);
   }

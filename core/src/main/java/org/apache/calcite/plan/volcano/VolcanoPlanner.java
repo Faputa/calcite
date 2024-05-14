@@ -243,7 +243,7 @@ public class VolcanoPlanner extends AbstractRelOptPlanner {
   @EnsuresNonNull("ruleDriver")
   private void initRuleQueue() {
     if (topDownOpt) {
-      ruleDriver = new TopDownRuleDriver(this);
+      ruleDriver = new TopDownRecRuleDriver(this);
     } else {
       ruleDriver = new IterativeRuleDriver(this);
     }
@@ -569,6 +569,7 @@ public class VolcanoPlanner extends AbstractRelOptPlanner {
       final ImmutableList<RelTrait> difference =
           root.getTraitSet().difference(subset.getTraitSet());
       if (difference.size() == 1 && subsets.add(subset)) {
+        // 这里添加的AbstractConverter实际上不会起作用，起作用的是ConverterRule
         register(
             new AbstractConverter(subset.getCluster(), subset,
                 difference.get(0).getTraitDef(), root.getTraitSet()),
@@ -952,6 +953,8 @@ public class VolcanoPlanner extends AbstractRelOptPlanner {
    *
    * @param rel       Relational expression whose cost has improved
    */
+  // 根据rel改进subset以及父节点成本
+  // 检查rel是否使任何subset更便宜，如果是，则将新成本传播到父节点。
   void propagateCostImprovements(RelNode rel) {
     RelMetadataQuery mq = rel.getCluster().getMetadataQuery();
     Map<RelNode, RelOptCost> propagateRels = new HashMap<>();

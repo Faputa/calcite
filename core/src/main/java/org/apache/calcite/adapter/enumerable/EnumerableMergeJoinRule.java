@@ -86,6 +86,7 @@ class EnumerableMergeJoinRule extends ConverterRule {
         collations.add(RelCollations.shift(collation, offset));
         traits = traits.replace(collation);
       }
+      // 可以视为通过规则实现透传特征
       newInputs.add(convert(ord.e, traits));
       offset += ord.e.getRowType().getFieldCount();
     }

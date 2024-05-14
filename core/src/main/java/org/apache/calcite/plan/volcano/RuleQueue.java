@@ -56,6 +56,7 @@ public abstract class RuleQueue {
    * {@link RelNode}s have importance zero. */
   protected boolean skipMatch(VolcanoRuleMatch match) {
     for (RelNode rel : match.rels) {
+      // 被剪枝过的节点？跳过
       if (planner.prunedNodes.contains(rel)) {
         return true;
       }
@@ -71,6 +72,7 @@ public abstract class RuleQueue {
     //   Project(A, X = X + 0 + 0)
     //   Project(A, X = X + 0 + 0 + 0)
     // also in the same subset. They are valid but useless.
+    // 如果匹配了一个环，既match.rels是一个环，跳过
     final Deque<RelSubset> subsets = new ArrayDeque<>();
     try {
       checkDuplicateSubsets(subsets, match.rule.getOperand(), match.rels);
@@ -96,6 +98,7 @@ public abstract class RuleQueue {
    *
    * @throws org.apache.calcite.util.Util.FoundOne on match
    */
+  // 这个算法很有意思，可以用来检测是否有向无环图，可以不用拓扑排序了
   private void checkDuplicateSubsets(Deque<RelSubset> subsets,
       RelOptRuleOperand operand, RelNode[] rels) {
     final RelSubset subset = planner.getSubsetNonNull(rels[operand.ordinalInRule]);

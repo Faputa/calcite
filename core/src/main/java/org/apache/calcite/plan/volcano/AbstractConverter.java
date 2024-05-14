@@ -49,6 +49,7 @@ import java.util.List;
  * expanded as soon as a non-abstract relexp is added to the set.
  */
 @Value.Enclosing
+// 强制器占位符，最后将由ExpandConversionRule替换为需要的强制器
 public class AbstractConverter extends ConverterImpl {
   //~ Constructors -----------------------------------------------------------
 

@@ -97,6 +97,7 @@ public interface PhysicalNode extends RelNode {
    * <p>Pair.left: the new traitset;
    * Pair.right: the list of required traitsets for child nodes.
    */
+  // 向子节点透传特征
   default @Nullable Pair<RelTraitSet, List<RelTraitSet>> passThroughTraits(
       RelTraitSet required) {
     throw new RuntimeException(getClass().getName()
@@ -130,6 +131,7 @@ public interface PhysicalNode extends RelNode {
    * <p>Pair.left: the new traitset;
    * Pair.right: the list of required traitsets for child nodes.
    */
+  // 从子节点派生特征
   default @Nullable Pair<RelTraitSet, List<RelTraitSet>> deriveTraits(
       RelTraitSet childTraits, int childId) {
     throw new RuntimeException(getClass().getName()

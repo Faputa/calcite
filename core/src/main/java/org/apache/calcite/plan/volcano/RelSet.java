@@ -179,6 +179,7 @@ class RelSet {
     assert equivalentSet == null : "adding to a dead set";
     final RelTraitSet traitSet = rel.getTraitSet().simplify();
     final RelSubset subset =
+        // 如果rel是强制器，则subset是被需要的
         getOrCreateSubset(rel.getCluster(), traitSet, rel.isEnforcer());
     subset.add(rel);
     return subset;
@@ -258,6 +259,8 @@ class RelSet {
     }
   }
 
+  // required为true表示subset是被需要的，即算法需要具备某种特征的RelSubset
+  // required为false表示subset是被派生的，即RelSubset是由RelNode派生的
   RelSubset getOrCreateSubset(
       RelOptCluster cluster, RelTraitSet traits, boolean required) {
     boolean needsConverter = false;

@@ -465,6 +465,7 @@ public class RelSubset extends AbstractRelNode {
    * Returns the best cost if this subset is fully optimized
    * or null if the subset is not fully optimized.
    */
+  // 如果此子集已完全优化，则返回最佳成本，否则返回 null
   @API(since = "1.24", status = API.Status.INTERNAL)
   public @Nullable RelOptCost getWinnerCost() {
     if (taskState == OptimizeState.COMPLETED && bestCost.isLe(upperBound)) {
@@ -474,6 +475,8 @@ public class RelSubset extends AbstractRelNode {
     return null;
   }
 
+  // 更改状态为优化中
+  // 如果upperBound小于给定的上界或bestCost，更新upperBound
   void startOptimize(RelOptCost ub) {
     assert getWinnerCost() == null : this + " is already optimized";
     if (upperBound.isLt(ub)) {

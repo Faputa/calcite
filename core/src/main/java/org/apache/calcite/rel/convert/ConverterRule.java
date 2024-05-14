@@ -44,7 +44,9 @@ public abstract class ConverterRule
     extends RelRule<ConverterRule.Config> {
   //~ Instance fields --------------------------------------------------------
 
+  // 来源特征
   private final RelTrait inTrait;
+  // 目标特征
   private final RelTrait outTrait;
   protected final Convention out;
 

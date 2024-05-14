@@ -82,8 +82,10 @@ class TopDownRuleQueue extends RuleQueue {
       }
       iterator.remove();
       if (!skipMatch(next)) {
+        // 如果不跳过匹配就返回
         return next;
       }
+      // 否则就继续找
     }
     return null;
   }
