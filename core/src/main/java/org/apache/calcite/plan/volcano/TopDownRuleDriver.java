@@ -932,7 +932,7 @@ class TopDownRuleDriver implements RuleDriver {
       tasks.push(new ApplyRules(mExpr, group, false));
 
       // Derive traits from inputs.
-      // 如果mExpr没有被透传过，执行派生逻辑
+      // 透传特征产生的节点不允许派生特征
       if (!passThroughCache.contains(mExpr)) {
         applyGenerator(this, this::derive);
       }
@@ -953,6 +953,7 @@ class TopDownRuleDriver implements RuleDriver {
 
       for (int i = 0; i < arity; i++) {
         int childId = i;
+        // 只从最右侧的子节点派生特征
         if (mode == DeriveMode.RIGHT_FIRST) {
           childId = arity - i - 1;
         }
@@ -1031,6 +1032,7 @@ class TopDownRuleDriver implements RuleDriver {
           }
         }
 
+        // 只从最左侧的节点派生特征
         if (mode == DeriveMode.LEFT_FIRST
             || mode == DeriveMode.RIGHT_FIRST) {
           break;
